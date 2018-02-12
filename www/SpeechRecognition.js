@@ -10,7 +10,7 @@ var exec = require("cordova/exec");
  */
 var SpeechRecognition = function () {
     this.grammars = null;
-    this.lang = "en";
+    this.lang = "zh-CN";
     this.continuous = false;
     this.interimResults = false;
     this.maxAlternatives = 1;
