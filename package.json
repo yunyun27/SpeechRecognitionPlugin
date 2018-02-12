@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Cordova Speech Recognition Plugin",
   "cordova": {
-    "id": "phonegap-plugin-speech-recognition",
+    "id": "phonegap-plugin-asr",
     "platforms": ["android", "ios"]
   },
   "repository": {
