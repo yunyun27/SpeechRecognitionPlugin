@@ -1,6 +1,6 @@
 {
-  "name": "phonegap-plugin-speech-recognition",
-  "version": "0.3.0",
+  "name": "phonegap-plugin-asr",
+  "version": "0.0.1",
   "description": "Cordova Speech Recognition Plugin",
   "cordova": {
     "id": "phonegap-plugin-speech-recognition",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/macdonst/SpeechRecognitionPlugin.git"
+    "url": "git+https://github.com/yunyun27/SpeechRecognitionPlugin.git"
   },
   "keywords": [
     "cordova",
@@ -18,10 +18,10 @@
     "cordova-android",
     "cordova-ios"
   ],
-  "author": "Simon MacDonald",
+  "author": "Yunyun Cai",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/macdonst/SpeechRecognitionPlugin/issues"
+    "url": "https://github.com/yunyun27/SpeechRecognitionPlugin/issues"
   },
-  "homepage": "https://github.com/macdonst/SpeechRecognitionPlugin#readme"
+  "homepage": "https://github.com/yunyun27/SpeechRecognitionPlugin#readme"
 }
