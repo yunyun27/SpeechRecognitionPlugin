@@ -1,23 +1,19 @@
-//
 //  Created by jcesarmobile on 30/11/14.
-//
-//
-
 #import "SpeechRecognition.h"
-#import "ISpeechSDK.h"
+// #import "ISpeechSDK.h"
 #import <Speech/Speech.h>
 
 @implementation SpeechRecognition
 
 - (void) init:(CDVInvokedUrlCommand*)command
 {
-    NSString * key = [self.commandDelegate.settings objectForKey:[@"apiKey" lowercaseString]];
-    if (!key) {
-        key = @"developerdemokeydeveloperdemokey";
-    }
-    iSpeechSDK *sdk = [iSpeechSDK sharedSDK];
-    sdk.APIKey = key;
-    self.iSpeechRecognition = [[ISSpeechRecognition alloc] init];
+    // NSString * key = [self.commandDelegate.settings objectForKey:[@"apiKey" lowercaseString]];
+    // if (!key) {
+    //     key = @"developerdemokeydeveloperdemokey";
+    // }
+    // iSpeechSDK *sdk = [iSpeechSDK sharedSDK];
+    // sdk.APIKey = key;
+    // self.iSpeechRecognition = [[ISSpeechRecognition alloc] init];
     self.audioEngine = [[AVAudioEngine alloc] init];
 }
 
@@ -58,13 +54,14 @@
             [self recordAndRecognizeWithLang:lang];
         }
     } else {
-        [self.iSpeechRecognition setDelegate:self];
-        [self.iSpeechRecognition setLocale:lang];
-        [self.iSpeechRecognition setFreeformType:ISFreeFormTypeDictation];
-        NSError *error;
-        if(![self.iSpeechRecognition listenAndRecognizeWithTimeout:10 error:&error]) {
-            NSLog(@"ERROR: %@", error);
-        }
+        [self sendErrorWithMessage:@"iOS version not supported" andCode:8];
+        // [self.iSpeechRecognition setDelegate:self];
+        // [self.iSpeechRecognition setLocale:lang];
+        // [self.iSpeechRecognition setFreeformType:ISFreeFormTypeDictation];
+        // NSError *error;
+        // if(![self.iSpeechRecognition listenAndRecognizeWithTimeout:10 error:&error]) {
+        //     NSLog(@"ERROR: %@", error);
+        // }
     }
 }
 
@@ -144,24 +141,24 @@
     return status != SFSpeechRecognizerAuthorizationStatusNotDetermined;
 }
 
-- (void)recognition:(ISSpeechRecognition *)speechRecognition didGetRecognitionResult:(ISSpeechRecognitionResult *)result
-{
-    NSMutableDictionary * resultDict = [[NSMutableDictionary alloc]init];
-    [resultDict setValue:result.text forKey:@"transcript"];
-    [resultDict setValue:[NSNumber numberWithBool:YES] forKey:@"final"];
-    [resultDict setValue:[NSNumber numberWithFloat:result.confidence]forKey:@"confidence"];
-    NSArray * alternatives = @[resultDict];
-    NSArray * results = @[alternatives];
-    [self sendResults:results];
+// - (void)recognition:(ISSpeechRecognition *)speechRecognition didGetRecognitionResult:(ISSpeechRecognitionResult *)result
+// {
+//     NSMutableDictionary * resultDict = [[NSMutableDictionary alloc]init];
+//     [resultDict setValue:result.text forKey:@"transcript"];
+//     [resultDict setValue:[NSNumber numberWithBool:YES] forKey:@"final"];
+//     [resultDict setValue:[NSNumber numberWithFloat:result.confidence]forKey:@"confidence"];
+//     NSArray * alternatives = @[resultDict];
+//     NSArray * results = @[alternatives];
+//     [self sendResults:results];
 
-}
+// }
 
--(void) recognition:(ISSpeechRecognition *)speechRecognition didFailWithError:(NSError *)error
-{
-    if (error.code == 28 || error.code == 23) {
-        [self sendErrorWithMessage:[error localizedDescription] andCode:7];
-    }
-}
+// -(void) recognition:(ISSpeechRecognition *)speechRecognition didFailWithError:(NSError *)error
+// {
+//     if (error.code == 28 || error.code == 23) {
+//         [self sendErrorWithMessage:[error localizedDescription] andCode:7];
+//     }
+// }
 
 -(void) sendResults:(NSArray *) results
 {
@@ -205,7 +202,7 @@
             [self.recognitionRequest endAudio];
         }
     } else {
-        [self.iSpeechRecognition cancel];
+        // [self.iSpeechRecognition cancel];
     }
 }
 
