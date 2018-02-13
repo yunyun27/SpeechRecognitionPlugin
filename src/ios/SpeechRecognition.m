@@ -54,7 +54,7 @@
             [self recordAndRecognizeWithLang:lang];
         }
     } else {
-        [self sendErrorWithMessage:@"iOS version not supported" andCode:8];
+        // [self sendErrorWithMessage:@"iOS version not supported" andCode:8];
         // [self.iSpeechRecognition setDelegate:self];
         // [self.iSpeechRecognition setLocale:lang];
         // [self.iSpeechRecognition setFreeformType:ISFreeFormTypeDictation];
