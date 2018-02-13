@@ -38,20 +38,20 @@
             </feature>
         </config-file>
         <source-file src="src/ios/SpeechRecognition.m" />
-        <source-file src="src/ios/libiSpeechSDK.a" framework="true" />
+       <!--  <source-file src="src/ios/libiSpeechSDK.a" framework="true" /> -->
         <header-file src="src/ios/SpeechRecognition.h" />
-        <header-file src="src/ios/Headers/iSpeechSDK.h" />
+      <!--   <header-file src="src/ios/Headers/iSpeechSDK.h" />
         <header-file src="src/ios/Headers/ISSpeechRecognition.h" />
         <header-file src="src/ios/Headers/ISSpeechRecognitionLocales.h" />
         <header-file src="src/ios/Headers/ISSpeechRecognitionResult.h" />
         <header-file src="src/ios/Headers/ISSpeechSynthesis.h" />
-        <header-file src="src/ios/Headers/ISSpeechSynthesisVoices.h" />
+        <header-file src="src/ios/Headers/ISSpeechSynthesisVoices.h" /> -->
         <framework src="AudioToolbox.framework" />
         <framework src="SystemConfiguration.framework" />
         <framework src="Security.framework" />
         <framework src="CFNetwork.framework" />
         <framework src="Speech.framework" weak="true" />
-        <resource-file src="src/ios/iSpeechSDK.bundle" />
+       <!--  <resource-file src="src/ios/iSpeechSDK.bundle" /> -->
         <preference name="MICROPHONE_USAGE_DESCRIPTION" default=" " />
         <config-file target="*-Info.plist" parent="NSMicrophoneUsageDescription">
             <string>$MICROPHONE_USAGE_DESCRIPTION</string>
