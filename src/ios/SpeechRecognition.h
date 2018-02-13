@@ -2,7 +2,7 @@
 // #import "ISpeechSDK.h"
 #import <Speech/Speech.h>
 
-@interface SpeechRecognition()// : CDVPlugin <ISSpeechRecognitionDelegate>
+@interface SpeechRecognition : CDVPlugin // <ISSpeechRecognitionDelegate>
 
 @property (nonatomic, strong) CDVInvokedUrlCommand * command;
 @property (nonatomic, strong) CDVPluginResult* pluginResult;
