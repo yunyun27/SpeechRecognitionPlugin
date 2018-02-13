@@ -15,7 +15,6 @@
     "speech",
     "recognition",
     "ecosystem:cordova",
-    "cordova-android",
     "cordova-ios"
   ],
   "author": "Yunyun Cai",
