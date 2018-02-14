@@ -61,7 +61,7 @@
        <!--  <framework src="CoreTelephoney.framework" weak="true"/> -->
         <framework src="libz.tbd" />
 
-        <framework src="src/ios/iflyMSC.framework"/>
+        <framework src="src/ios/iflyMSC.framework" custom="true" />
        <!--  <resource-file src="src/ios/iSpeechSDK.bundle" /> -->
         <preference name="MICROPHONE_USAGE_DESCRIPTION" default=" " />
         <config-file target="*-Info.plist" parent="NSMicrophoneUsageDescription">
