@@ -16,6 +16,7 @@
 @property (nonatomic, strong) SFSpeechRecognitionTask *recognitionTask;
 
 @property (nonatomic, strong) IFlySpeechRecognizer* IFlyRecognizer;
+@property (nonatomic, strong) NSMutableString* curResult;
 
 - (void) init:(CDVInvokedUrlCommand*)command;
 - (void) start:(CDVInvokedUrlCommand*)command;

@@ -26,8 +26,7 @@
     // IFlyTek requires appid
     NSString * key = [self.commandDelegate.settings objectForKey:[@"appId" lowercaseString]];
     if (key) {
-        self.appId = key;
-        NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@",self.appId];
+        NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@",key];
         [IFlySpeechUtility createUtility:initString];
         self.curResult = [[NSMutableString alloc]init];
     }
@@ -190,7 +189,7 @@
 #pragma mark IFlySpeechRecognizerDelegate
 - (void) onError:(IFlySpeechError *) errorCode
 {
-    [self sendErrorWithMessage:[error errorCode.errorDesc] andCode:errorCode.errorCode];
+    [self sendErrorWithMessage:errorCode.errorDesc andCode:errorCode.errorCode];
 }
 
 - (void) onResults:(NSArray *) results isLast:(BOOL) isLast
