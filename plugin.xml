@@ -57,7 +57,7 @@
         <framework src="AVFoundation.framework" />
         <framework src="AddressBook.framework" />
         <framework src="QuartzCore.framework" />
-       <!--  <framework src="CoreTelephony.framework" /> -->
+        <framework src="Contacts.framework" />
         <framework src="libz.tbd" />
 
         <framework src="src/ios/iflyMSC.framework" custom="true" />
