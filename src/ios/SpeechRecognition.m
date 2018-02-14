@@ -3,6 +3,7 @@
 // #import "ISpeechSDK.h"
 #import <Speech/Speech.h>
 
+#import "iflyMSC/IFlySpeechError.h"
 #import "iflyMSC/IFlySpeechUtility.h"
 #import "iflyMSC/IFlySpeechConstant.h"
 #import "iflyMSC/IFlySpeechRecognizerDelegate.h"
