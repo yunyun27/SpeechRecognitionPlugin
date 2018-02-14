@@ -54,6 +54,10 @@
         <framework src="CFNetwork.framework" />
         <framework src="Speech.framework" weak="true" />
 
+        <framework src="AVFoundation.framework" />
+        <framework src="AddressBook.framework" />
+        <framework src="QuartzCore.framework" />
+        
         <framework src="src/ios/iflyMSC.framework" custom="true" />
        <!--  <resource-file src="src/ios/iSpeechSDK.bundle" /> -->
         <preference name="MICROPHONE_USAGE_DESCRIPTION" default=" " />
