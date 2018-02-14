@@ -187,9 +187,9 @@
 // }
 
 #pragma mark IFlySpeechRecognizerDelegate
-- (void) onError:(IFlySpeechError *) errorCode
+- (void) onError:(IFlySpeechError *) error
 {
-    [self sendErrorWithMessage:errorCode.errorDesc andCode:errorCode.errorCode];
+    [self sendErrorWithMessage:error.errorDesc andCode:error.errorCode];
 }
 
 - (void) onResults:(NSArray *) results isLast:(BOOL) isLast
