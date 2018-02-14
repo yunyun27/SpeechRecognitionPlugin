@@ -55,7 +55,7 @@
         <framework src="Speech.framework" weak="true" />
 
         <framework src="AVFoundation.framework" />
-        <framework src="Foundation.framework" />
+        <!-- <framework src="Foundation.framework" /> -->
         <framework src="CoreTelephony.framework"/>
         <framework src="AddressBook.framework" />
         <framework src="QuartzCore.framework" />
