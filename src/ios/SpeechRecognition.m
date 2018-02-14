@@ -1,6 +1,4 @@
-//  Created by jcesarmobile on 30/11/14.
 #import "SpeechRecognition.h"
-// #import "ISpeechSDK.h"
 #import <Speech/Speech.h>
 
 #import "iflyMSC/IFlySpeechError.h"
@@ -15,24 +13,31 @@
 
 - (void) init:(CDVInvokedUrlCommand*)command
 {
-    // NSString * key = [self.commandDelegate.settings objectForKey:[@"apiKey" lowercaseString]];
-    // if (!key) {
-    //     key = @"developerdemokeydeveloperdemokey";
-    // }
-    // iSpeechSDK *sdk = [iSpeechSDK sharedSDK];
-    // sdk.APIKey = key;
-    // self.iSpeechRecognition = [[ISSpeechRecognition alloc] init];
     self.audioEngine = [[AVAudioEngine alloc] init];
 
     // IFlyTek requires appid
-    NSString * key = [self.commandDelegate.settings objectForKey:[@"appId" lowercaseString]];
-    if (key) {
-        NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@",key];
-        [IFlySpeechUtility createUtility:initString];
-        self.curResult = [[NSMutableString alloc]init];
-    }
-    else {
-        [self sendErrorWithMessage:@"Permission not allowed" andCode:4];
+    if (!NSClassFromString(@"SFSpeechRecognizer")) {
+        NSString * key = [self.commandDelegate.settings objectForKey:[@"appId" lowercaseString]];
+        if (key) {
+            NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@",key];
+            [IFlySpeechUtility createUtility:initString];
+            self.curResult = [[NSMutableString alloc]init];
+
+             if (!self.IFlyRecognizer){
+                self.IFlyRecognizer = [IFlySpeechRecognizer sharedInstance];
+                self.IFlyRecognizer.delegate = self;
+                if (self.IFlyRecognizer){
+                    [self.IFlyRecognizer setParameter:@"0" forKey:@"ptt"]; // no punctuation
+                    [self.IFlyRecognizer setParameter:@"0" forKey:@"nonum"]; // use character for digits
+                }
+                else {
+                    [self sendErrorWithMessage:@"IFlyTek init error" andCode:9];
+                }
+            }
+        }
+        else {
+            [self sendErrorWithMessage:@"IFlyTek apikey not found" andCode:8];
+        }
     }
 }
 
@@ -73,12 +78,6 @@
             [self recordAndRecognizeWithLang:lang];
         }
     } else {
-        if (!self.IFlyRecognizer){
-            self.IFlyRecognizer = [IFlySpeechRecognizer sharedInstance];
-            self.IFlyRecognizer.delegate = self;
-            [self.IFlyRecognizer setParameter:@"0" forKey:@"ptt"]; // no punctuation
-            [self.IFlyRecognizer setParameter:@"0" forKey:@"nonum"]; // use character for digits
-        }
         [self.curResult setString:@""]; // reset curResult
         [self.IFlyRecognizer startListening];
 
