@@ -22,18 +22,6 @@
             NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@",key];
             [IFlySpeechUtility createUtility:initString];
             self.curResult = [[NSMutableString alloc]init];
-
-             if (!self.IFlyRecognizer){
-                self.IFlyRecognizer = [IFlySpeechRecognizer sharedInstance];
-                self.IFlyRecognizer.delegate = self;
-                if (self.IFlyRecognizer){
-                    [self.IFlyRecognizer setParameter:@"0" forKey:@"ptt"]; // no punctuation
-                    [self.IFlyRecognizer setParameter:@"0" forKey:@"nonum"]; // use character for digits
-                }
-                else {
-                    [self sendErrorWithMessage:@"IFlyTek init error" andCode:9];
-                }
-            }
         }
         else {
             [self sendErrorWithMessage:@"IFlyTek apikey not found" andCode:8];
@@ -78,16 +66,20 @@
             [self recordAndRecognizeWithLang:lang];
         }
     } else {
+        if (!self.IFlyRecognizer){
+            self.IFlyRecognizer = [IFlySpeechRecognizer sharedInstance];
+            self.IFlyRecognizer.delegate = self;
+            if (self.IFlyRecognizer){
+                [self.IFlyRecognizer setParameter:@"0" forKey:@"ptt"]; // no punctuation
+                [self.IFlyRecognizer setParameter:@"0" forKey:@"nonum"]; // use character for digits
+            }
+            else {
+                [self sendErrorWithMessage:@"IFlyTek init error" andCode:9];
+                return;
+            }
+        }
         [self.curResult setString:@""]; // reset curResult
         [self.IFlyRecognizer startListening];
-
-        // [self.iSpeechRecognition setDelegate:self];
-        // [self.iSpeechRecognition setLocale:lang];
-        // [self.iSpeechRecognition setFreeformType:ISFreeFormTypeDictation];
-        // NSError *error;
-        // if(![self.iSpeechRecognition listenAndRecognizeWithTimeout:10 error:&error]) {
-        //     NSLog(@"ERROR: %@", error);
-        // }
     }
 }
 
