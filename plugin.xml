@@ -56,7 +56,7 @@
 
         <framework src="AVFoundation.framework" />
         <framework src="Foundation.framework" />
-        <framework src="CoreTelephoney.framework"/>
+        <framework src="CoreTelephony.framework"/>
         <framework src="AddressBook.framework" />
         <framework src="QuartzCore.framework" />
         <framework src="Contacts.framework" />
