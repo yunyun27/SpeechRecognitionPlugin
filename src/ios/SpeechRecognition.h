@@ -2,7 +2,10 @@
 // #import "ISpeechSDK.h"
 #import <Speech/Speech.h>
 
-@interface SpeechRecognition : CDVPlugin // <ISSpeechRecognitionDelegate>
+#import "iflyMSC/IFlySpeechRecognizer.h"
+#import "iflyMSC/IFlySpeechRecognizerDelegate.h"
+
+@interface SpeechRecognition : CDVPlugin  <IFlySpeechRecognizerDelegate>
 
 @property (nonatomic, strong) CDVInvokedUrlCommand * command;
 @property (nonatomic, strong) CDVPluginResult* pluginResult;
@@ -11,6 +14,8 @@
 @property (nonatomic, strong) AVAudioEngine *audioEngine;
 @property (nonatomic, strong) SFSpeechAudioBufferRecognitionRequest *recognitionRequest;
 @property (nonatomic, strong) SFSpeechRecognitionTask *recognitionTask;
+
+@property (nonatomic, strong) IFlySpeechRecognizer* IFlyRecognizer;
 
 - (void) init:(CDVInvokedUrlCommand*)command;
 - (void) start:(CDVInvokedUrlCommand*)command;

@@ -40,6 +40,8 @@
         <source-file src="src/ios/SpeechRecognition.m" />
        <!--  <source-file src="src/ios/libiSpeechSDK.a" framework="true" /> -->
         <header-file src="src/ios/SpeechRecognition.h" />
+        <header-file src="src/ios/ISRDataHelper.h" />
+        <source-file src="src/ios/ISRDataHelper.m" />
       <!--   <header-file src="src/ios/Headers/iSpeechSDK.h" />
         <header-file src="src/ios/Headers/ISSpeechRecognition.h" />
         <header-file src="src/ios/Headers/ISSpeechRecognitionLocales.h" />
@@ -51,6 +53,8 @@
         <framework src="Security.framework" />
         <framework src="CFNetwork.framework" />
         <framework src="Speech.framework" weak="true" />
+
+        <framework src="src/ios/iflyMSC.framework" custom="true" />
        <!--  <resource-file src="src/ios/iSpeechSDK.bundle" /> -->
         <preference name="MICROPHONE_USAGE_DESCRIPTION" default=" " />
         <config-file target="*-Info.plist" parent="NSMicrophoneUsageDescription">

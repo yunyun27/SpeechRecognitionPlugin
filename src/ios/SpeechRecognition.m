@@ -3,6 +3,13 @@
 // #import "ISpeechSDK.h"
 #import <Speech/Speech.h>
 
+#import "iflyMSC/IFlySpeechUtility.h"
+#import "iflyMSC/IFlySpeechConstant.h"
+#import "iflyMSC/IFlySpeechRecognizerDelegate.h"
+#import "iflyMSC/IFlySpeechRecognizer.h"
+
+#import "ISRDataHelper.h"
+
 @implementation SpeechRecognition
 
 - (void) init:(CDVInvokedUrlCommand*)command
@@ -15,6 +22,18 @@
     // sdk.APIKey = key;
     // self.iSpeechRecognition = [[ISSpeechRecognition alloc] init];
     self.audioEngine = [[AVAudioEngine alloc] init];
+
+    // IFlyTek requires appid
+    NSString * key = [self.commandDelegate.settings objectForKey:[@"appId" lowercaseString]];
+    if (key) {
+        self.appId = key;
+        NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@",self.appId];
+        [IFlySpeechUtility createUtility:initString];
+        self.curResult = [[NSMutableString alloc]init];
+    }
+    else {
+        [self sendErrorWithMessage:@"Permission not allowed" andCode:4];
+    }
 }
 
 - (void) start:(CDVInvokedUrlCommand*)command
@@ -54,7 +73,15 @@
             [self recordAndRecognizeWithLang:lang];
         }
     } else {
-        // [self sendErrorWithMessage:@"iOS version not supported" andCode:8];
+        if (!self.IFlyRecognizer){
+            self.IFlyRecognizer = [IFlySpeechRecognizer sharedInstance];
+            self.IFlyRecognizer.delegate = self;
+            [self.IFlyRecognizer setParameter:@"0" forKey:@"ptt"]; // no punctuation
+            [self.IFlyRecognizer setParameter:@"0" forKey:@"nonum"]; // use character for digits
+        }
+        [self.curResult setString:@""]; // reset curResult
+        [self.IFlyRecognizer startListening];
+
         // [self.iSpeechRecognition setDelegate:self];
         // [self.iSpeechRecognition setLocale:lang];
         // [self.iSpeechRecognition setFreeformType:ISFreeFormTypeDictation];
@@ -160,6 +187,40 @@
 //     }
 // }
 
+#pragma mark IFlySpeechRecognizerDelegate
+- (void) onError:(IFlySpeechError *) errorCode
+{
+    [self sendErrorWithMessage:[error errorCode.errorDesc] andCode:errorCode.errorCode];
+}
+
+- (void) onResults:(NSArray *) results isLast:(BOOL) isLast
+{
+    NSMutableString *result = [[NSMutableString alloc] init];
+    NSMutableString *resultString = [[NSMutableString alloc]init];
+    NSDictionary *dict = results[0];
+    for (NSString *key in dict) {
+        
+        [result appendFormat:@"%@",key];
+        
+        NSString * resultFromJson =  [ISRDataHelper stringFromJson:result];
+        [resultString appendString:resultFromJson];
+        
+    }
+    if (isLast) { 
+        //NSLog(@"result is:%@",self.curResult);
+
+        NSMutableDictionary * resultDict = [[NSMutableDictionary alloc]init];
+        [resultDict setValue: self.curResult forKey:@"transcript"];
+        [resultDict setValue:[NSNumber numberWithBool:YES] forKey:@"final"];
+        [resultDict setValue:[NSNumber numberWithFloat:0]forKey:@"confidence"];
+        NSArray * alternatives = @[resultDict];
+        NSArray * results = @[alternatives];
+        [self sendResults:results];
+    }
+    
+    [self.curResult appendString:resultString];    
+}
+
 -(void) sendResults:(NSArray *) results
 {
     NSMutableDictionary * event = [[NSMutableDictionary alloc]init];
@@ -203,6 +264,7 @@
         }
     } else {
         // [self.iSpeechRecognition cancel];
+        [self.IFlyRecognizer stopListening];
     }
 }
 
