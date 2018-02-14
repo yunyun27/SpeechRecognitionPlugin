@@ -58,10 +58,10 @@
         <framework src="AddressBook.framework" />
         <framework src="QuartzCore.framework" />
         <framework src="Contacts.framework" />
-        <framework src="CoreTelephoney.framework" weak="true"/>
+       <!--  <framework src="CoreTelephoney.framework" weak="true"/> -->
         <framework src="libz.tbd" />
 
-        <framework src="src/ios/iflyMSC.framework" custom="true" />
+        <framework src="src/ios/iflyMSC.framework" weak="true" />
        <!--  <resource-file src="src/ios/iSpeechSDK.bundle" /> -->
         <preference name="MICROPHONE_USAGE_DESCRIPTION" default=" " />
         <config-file target="*-Info.plist" parent="NSMicrophoneUsageDescription">
