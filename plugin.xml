@@ -55,10 +55,12 @@
         <framework src="Speech.framework" weak="true" />
 
         <framework src="AVFoundation.framework" />
+        <framework src="Foundation.framework" />
+        <framework src="CoreTelephoney.framework"/>
         <framework src="AddressBook.framework" />
         <framework src="QuartzCore.framework" />
         <framework src="Contacts.framework" />
-       <!--  <framework src="CoreTelephoney.framework" weak="true"/> -->
+
         <framework src="libz.tbd" />
 
         <framework src="src/ios/iflyMSC.framework" custom="true" />
