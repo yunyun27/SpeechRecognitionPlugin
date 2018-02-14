@@ -57,7 +57,9 @@
         <framework src="AVFoundation.framework" />
         <framework src="AddressBook.framework" />
         <framework src="QuartzCore.framework" />
-        
+       <!--  <framework src="CoreTelephony.framework" /> -->
+        <framework src="libz.tbd" />
+
         <framework src="src/ios/iflyMSC.framework" custom="true" />
        <!--  <resource-file src="src/ios/iSpeechSDK.bundle" /> -->
         <preference name="MICROPHONE_USAGE_DESCRIPTION" default=" " />
