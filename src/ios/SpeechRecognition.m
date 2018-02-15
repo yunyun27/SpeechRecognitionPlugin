@@ -26,7 +26,7 @@
         else {
             //[self sendErrorWithMessage:@"IFlyTek apikey not found" andCode:8];
             CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                                          messageAsString:"IFlyTek apikey not found"];
+                                                          messageAsString:@"IFlyTek apikey not found"];
             self.command = command;
             [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
         }
