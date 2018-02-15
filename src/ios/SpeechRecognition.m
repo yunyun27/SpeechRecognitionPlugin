@@ -14,23 +14,31 @@
 - (void) init:(CDVInvokedUrlCommand*)command
 {
     self.audioEngine = [[AVAudioEngine alloc] init];
-
     // IFlyTek requires appid
     if (!NSClassFromString(@"SFSpeechRecognizer")) {
+        self.command = command;
         NSString * key = [self.commandDelegate.settings objectForKey:[@"appId" lowercaseString]];
         if (key) {
             NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@",key];
             [IFlySpeechUtility createUtility:initString];
             self.curResult = [[NSMutableString alloc]init];
+
+            if (!self.IFlyRecognizer){
+                self.IFlyRecognizer = [IFlySpeechRecognizer sharedInstance];
+                self.IFlyRecognizer.delegate = self;
+                if (self.IFlyRecognizer){
+                    [self.IFlyRecognizer setParameter:@"0" forKey:@"ptt"]; // no punctuation
+                    [self.IFlyRecognizer setParameter:@"0" forKey:@"nonum"]; // use character for digits
+                }
+                else {
+                    [self sendErrorWithMessage:@"IFlyTek init error" andCode:9];
+                    return;
+                }
+            }
         }
         else {
-            self.command = command;
+            
             [self sendErrorWithMessage:@"IFlyTek api key not found" andCode:8];
-            //[self fireError:@"IFlyTek apikey not found"];
-            // CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-            //                                               messageAsString:@"IFlyTek apikey not found"];
-            // 
-            // [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
         }
     }
 }
@@ -72,18 +80,6 @@
             [self recordAndRecognizeWithLang:lang];
         }
     } else {
-        if (!self.IFlyRecognizer){
-            self.IFlyRecognizer = [IFlySpeechRecognizer sharedInstance];
-            self.IFlyRecognizer.delegate = self;
-            if (self.IFlyRecognizer){
-                [self.IFlyRecognizer setParameter:@"0" forKey:@"ptt"]; // no punctuation
-                [self.IFlyRecognizer setParameter:@"0" forKey:@"nonum"]; // use character for digits
-            }
-            else {
-                [self sendErrorWithMessage:@"IFlyTek init error" andCode:9];
-                return;
-            }
-        }
         [self.curResult setString:@""]; // reset curResult
         [self.IFlyRecognizer startListening];
     }
@@ -244,13 +240,13 @@
     [self.commandDelegate sendPluginResult:self.pluginResult callbackId:self.command.callbackId];
 }
 
--(void) fireError:(NSString *)errorMessage
-{
-    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                                          messageAsString:errorMessage];
+// -(void) fireError:(NSString *)errorMessage
+// {
+//     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+//                                                           messageAsString:errorMessage];
             
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
-}
+//     [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
+// }
 
 -(void) stop:(CDVInvokedUrlCommand*)command
 {
