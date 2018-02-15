@@ -7,7 +7,7 @@
 #import "iflyMSC/IFlySpeechRecognizerDelegate.h"
 #import "iflyMSC/IFlySpeechRecognizer.h"
 
-#import "ISRDataHelper.h"
+#import "ISRDataHelper.h" // for iFlytek result parsing
 
 @implementation SpeechRecognition
 
@@ -107,7 +107,7 @@
 
         self.recognitionRequest = [[SFSpeechAudioBufferRecognitionRequest alloc] init];
         self.recognitionRequest.shouldReportPartialResults = [[self.command argumentAtIndex:1] boolValue];
-
+        self.recognitionRequest.contextualStrings = [[self.command argumentAtIndex:3]];
         self.recognitionTask = [self.sfSpeechRecognizer recognitionTaskWithRequest:self.recognitionRequest resultHandler:^(SFSpeechRecognitionResult *result, NSError *error) {
 
             if (error) {
@@ -165,60 +165,6 @@
     return status != SFSpeechRecognizerAuthorizationStatusNotDetermined;
 }
 
-// - (void)recognition:(ISSpeechRecognition *)speechRecognition didGetRecognitionResult:(ISSpeechRecognitionResult *)result
-// {
-//     NSMutableDictionary * resultDict = [[NSMutableDictionary alloc]init];
-//     [resultDict setValue:result.text forKey:@"transcript"];
-//     [resultDict setValue:[NSNumber numberWithBool:YES] forKey:@"final"];
-//     [resultDict setValue:[NSNumber numberWithFloat:result.confidence]forKey:@"confidence"];
-//     NSArray * alternatives = @[resultDict];
-//     NSArray * results = @[alternatives];
-//     [self sendResults:results];
-
-// }
-
-// -(void) recognition:(ISSpeechRecognition *)speechRecognition didFailWithError:(NSError *)error
-// {
-//     if (error.code == 28 || error.code == 23) {
-//         [self sendErrorWithMessage:[error localizedDescription] andCode:7];
-//     }
-// }
-
-#pragma mark IFlySpeechRecognizerDelegate
-- (void) onError:(IFlySpeechError *) error
-{
-    if (error.errorCode != 0) {
-        [self sendErrorWithMessage:error.errorDesc andCode:error.errorCode];
-    }
-}
-
-- (void) onResults:(NSArray *) results isLast:(BOOL) isLast
-{
-    NSMutableString *result = [[NSMutableString alloc] init];
-    NSMutableString *resultString = [[NSMutableString alloc]init];
-    NSDictionary *dict = results[0];
-    for (NSString *key in dict) {
-        
-        [result appendFormat:@"%@",key];
-        
-        NSString * resultFromJson =  [ISRDataHelper stringFromJson:result];
-        [resultString appendString:resultFromJson];
-        
-    }
-    if (isLast) { 
-        //NSLog(@"result is:%@",self.curResult);
-
-        NSMutableDictionary * resultDict = [[NSMutableDictionary alloc]init];
-        [resultDict setValue: self.curResult forKey:@"transcript"];
-        [resultDict setValue:[NSNumber numberWithBool:YES] forKey:@"final"];
-        [resultDict setValue:[NSNumber numberWithFloat:0]forKey:@"confidence"];
-        NSArray * alternatives = @[resultDict];
-        NSArray * results = @[alternatives];
-        [self sendResults:results];
-    }
-    
-    [self.curResult appendString:resultString];    
-}
 
 -(void) sendResults:(NSArray *) results
 {
@@ -268,7 +214,6 @@
             [self.recognitionRequest endAudio];
         }
     } else {
-        // [self.iSpeechRecognition cancel];
         [self.IFlyRecognizer stopListening];
     }
 }
@@ -279,6 +224,42 @@
     [self.audioEngine.inputNode removeTapOnBus:0];
     self.recognitionRequest = nil;
     self.recognitionTask = nil;
+}
+
+#pragma mark IFlySpeechRecognizerDelegate
+- (void) onError:(IFlySpeechError *) error
+{
+    if (error.errorCode != 0) {
+        [self sendErrorWithMessage:error.errorDesc andCode:error.errorCode];
+    }
+}
+
+- (void) onResults:(NSArray *) results isLast:(BOOL) isLast
+{
+    NSMutableString *result = [[NSMutableString alloc] init];
+    NSMutableString *resultString = [[NSMutableString alloc]init];
+    NSDictionary *dict = results[0];
+    for (NSString *key in dict) {
+        
+        [result appendFormat:@"%@",key];
+        
+        NSString * resultFromJson =  [ISRDataHelper stringFromJson:result];
+        [resultString appendString:resultFromJson];
+        
+    }
+    if (isLast) { 
+        //NSLog(@"result is:%@",self.curResult);
+
+        NSMutableDictionary * resultDict = [[NSMutableDictionary alloc]init];
+        [resultDict setValue: self.curResult forKey:@"transcript"];
+        [resultDict setValue:[NSNumber numberWithBool:YES] forKey:@"final"];
+        [resultDict setValue:[NSNumber numberWithFloat:0]forKey:@"confidence"];
+        NSArray * alternatives = @[resultDict];
+        NSArray * results = @[alternatives];
+        [self sendResults:results];
+    }
+    
+    [self.curResult appendString:resultString];    
 }
 
 @end
