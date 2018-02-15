@@ -244,7 +244,7 @@
     [self.commandDelegate sendPluginResult:self.pluginResult callbackId:self.command.callbackId];
 }
 
--(void) engineInitCallback:(NSNumber) engine
+-(void) engineInitCallback:(NSInteger) engine
 {
     self.pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:engine];
     [self.commandDelegate sendPluginResult:self.pluginResult callbackId:self.command.callbackId];
