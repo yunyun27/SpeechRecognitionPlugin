@@ -32,11 +32,10 @@ var SpeechRecognition = function () {
     this.onend = null;
 
     var self = this;
-    exec(function() {
-        console.log("initialized");
-    }, function(e) {
-        console.log("error: " + e.error);
-        self.initError = e.error;
+    exec(function(engine) { // success callback, set engine
+        self.engine = engine;
+    }, function(event) { // error callback, set error
+        self.initError = event.error;
     }, "SpeechRecognition", "init", []);
 };
 

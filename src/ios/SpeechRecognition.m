@@ -13,10 +13,11 @@
 
 - (void) init:(CDVInvokedUrlCommand*)command
 {
+    self.command = command;  
     self.audioEngine = [[AVAudioEngine alloc] init];
     // IFlyTek requires appid
     if (!NSClassFromString(@"SFSpeechRecognizer")) {
-        self.command = command;
+        
         NSString * key = [self.commandDelegate.settings objectForKey:[@"appId" lowercaseString]];
         if (key) {
             NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@",key];
@@ -29,6 +30,7 @@
                 if (self.IFlyRecognizer){
                     [self.IFlyRecognizer setParameter:@"0" forKey:@"ptt"]; // no punctuation
                     [self.IFlyRecognizer setParameter:@"0" forKey:@"nonum"]; // use character for digits
+                    [self engineInitCallback: 3]; // 3 : iFlytek asr for iOS
                 }
                 else {
                     [self sendErrorWithMessage:@"IFlyTek init error" andCode:9];
@@ -36,10 +38,12 @@
                 }
             }
         }
-        else {
-            
+        else {           
             [self sendErrorWithMessage:@"IFlyTek api key not found" andCode:8];
         }
+    }
+    else {
+        [self engineInitCallback: 2]; // 2 : iOS native asr
     }
 }
 
@@ -240,13 +244,11 @@
     [self.commandDelegate sendPluginResult:self.pluginResult callbackId:self.command.callbackId];
 }
 
-// -(void) fireError:(NSString *)errorMessage
-// {
-//     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-//                                                           messageAsString:errorMessage];
-            
-//     [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
-// }
+-(void) engineInitCallback:(NSNumber) engine
+{
+    self.pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:engine];
+    [self.commandDelegate sendPluginResult:self.pluginResult callbackId:self.command.callbackId];
+}
 
 -(void) stop:(CDVInvokedUrlCommand*)command
 {
