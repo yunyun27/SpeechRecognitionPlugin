@@ -13,8 +13,10 @@ var SpeechRecognition = function () {
     this.lang = "zh-CN";
     this.continuous = false;
     this.interimResults = false;
-    this.maxAlternatives = 1;
+    this.maxAlternatives = 3;
     this.serviceURI = "";
+
+    this.initError = "";
     
     // event methods
     this.onaudiostart = null;
@@ -29,10 +31,12 @@ var SpeechRecognition = function () {
     this.onstart = null;
     this.onend = null;
 
+    var self = this;
     exec(function() {
         console.log("initialized");
     }, function(e) {
         console.log("error: " + e);
+        self.initError = e;
     }, "SpeechRecognition", "init", []);
 };
 
