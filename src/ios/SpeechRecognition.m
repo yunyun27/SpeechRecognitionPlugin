@@ -24,10 +24,11 @@
             self.curResult = [[NSMutableString alloc]init];
         }
         else {
-            [self sendError:@"IFlyTek apikey not found"];
+            self.command = command;
+            [self fireError:@"IFlyTek apikey not found"];
             // CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
             //                                               messageAsString:@"IFlyTek apikey not found"];
-            // self.command = command;
+            // 
             // [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
         }
     }
@@ -242,14 +243,12 @@
     [self.commandDelegate sendPluginResult:self.pluginResult callbackId:self.command.callbackId];
 }
 
--(void) sendError:(NSString *)errorMessage
+-(void) fireError:(NSString *)errorMessage
 {
-    NSMutableDictionary * event = [[NSMutableDictionary alloc]init];
-    [event setValue:@"error" forKey:@"type"];
-    [event setValue:errorMessage forKey:@"message"];
-    self.pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:event];
-    [self.pluginResult setKeepCallbackAsBool:YES];
-    [self.commandDelegate sendPluginResult:self.pluginResult callbackId:self.command.callbackId];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                                          messageAsString:errorMessage];
+            
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
 }
 
 -(void) stop:(CDVInvokedUrlCommand*)command
