@@ -35,8 +35,8 @@ var SpeechRecognition = function () {
     exec(function() {
         console.log("initialized");
     }, function(e) {
-        console.log("error: " + e.message);
-        self.initError = e.message;
+        console.log("error: " + e.error);
+        self.initError = e.error;
     }, "SpeechRecognition", "init", []);
 };
 

@@ -233,8 +233,8 @@
 {
     NSMutableDictionary * event = [[NSMutableDictionary alloc]init];
     [event setValue:@"error" forKey:@"type"];
-    [event setValue:[NSNumber numberWithInteger:code] forKey:@"error"];
-    [event setValue:errorMessage forKey:@"message"];
+    [event setValue:[NSNumber numberWithInteger:code] forKey:@"errorCode"];
+    [event setValue:errorMessage forKey:@"error"];
     self.pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:event];
     [self.pluginResult setKeepCallbackAsBool:NO];
     [self.commandDelegate sendPluginResult:self.pluginResult callbackId:self.command.callbackId];
