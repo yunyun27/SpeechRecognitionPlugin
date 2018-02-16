@@ -223,6 +223,7 @@
 
 -(void) stopAndRelease
 {
+    [self fireEvent:@"speechend"];
     [self.audioEngine stop];
     [self.audioEngine.inputNode removeTapOnBus:0];
     self.recognitionRequest = nil;
@@ -279,6 +280,11 @@
 - (void) onBeginOfSpeech
 {
     [self fireEvent:@"audiostart"];
+}
+
+- (void) onEndOfSpeech
+{
+    [self fireEvent:@"speechend"];
 }
 
 @end
