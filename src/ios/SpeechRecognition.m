@@ -107,7 +107,8 @@
 
         self.recognitionRequest = [[SFSpeechAudioBufferRecognitionRequest alloc] init];
         self.recognitionRequest.shouldReportPartialResults = [[self.command argumentAtIndex:1] boolValue];
-        //self.recognitionRequest.contextualStrings = [[self.command argumentAtIndex:3] stringValue];
+        NSDictionary* options = [self.command argumentAtIndex:3];
+        self.recognitionRequest.contextualStrings = [options objectForKey:@"context"];
         self.recognitionTask = [self.sfSpeechRecognizer recognitionTaskWithRequest:self.recognitionRequest resultHandler:^(SFSpeechRecognitionResult *result, NSError *error) {
 
             if (error) {
