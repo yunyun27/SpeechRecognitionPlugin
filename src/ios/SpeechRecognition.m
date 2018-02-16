@@ -50,11 +50,12 @@
 - (void) start:(CDVInvokedUrlCommand*)command
 {
     self.command = command;
-    NSMutableDictionary * event = [[NSMutableDictionary alloc]init];
-    [event setValue:@"start" forKey:@"type"];
-    self.pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:event];
-    [self.pluginResult setKeepCallbackAsBool:YES];
-    [self.commandDelegate sendPluginResult:self.pluginResult callbackId:self.command.callbackId];
+    [self fireEvent:@"start"];
+    // NSMutableDictionary * event = [[NSMutableDictionary alloc]init];
+    // [event setValue:@"start" forKey:@"type"];
+    // self.pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:event];
+    // [self.pluginResult setKeepCallbackAsBool:YES];
+    // [self.commandDelegate sendPluginResult:self.pluginResult callbackId:self.command.callbackId];
     [self recognize];
 
 }
@@ -104,6 +105,7 @@
         }
 
         [self initAudioSession];
+        [self fireEvent:@"audiostart"];
 
         self.recognitionRequest = [[SFSpeechAudioBufferRecognitionRequest alloc] init];
         self.recognitionRequest.shouldReportPartialResults = [[self.command argumentAtIndex:1] boolValue];
@@ -227,6 +229,17 @@
     self.recognitionTask = nil;
 }
 
+- (void) fireEvent:(NSString*) eventName
+{
+    if (self.command.callbackId) {
+        NSMutableDictionary * event = [[NSMutableDictionary alloc]init];
+        [event setValue:eventName forKey:@"type"];
+        self.pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:event];
+        [self.pluginResult setKeepCallbackAsBool:YES];
+        [self.commandDelegate sendPluginResult:self.pluginResult callbackId:self.command.callbackId];
+    }
+}
+
 #pragma mark IFlySpeechRecognizerDelegate
 - (void) onError:(IFlySpeechError *) error
 {
@@ -261,6 +274,11 @@
     }
     
     [self.curResult appendString:resultString];    
+}
+
+- (void) onBeginOfSpeech
+{
+    [self fireEvent:@"audiostart"];
 }
 
 @end
