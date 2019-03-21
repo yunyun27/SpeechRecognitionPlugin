@@ -30,12 +30,16 @@
                 if (self.IFlyRecognizer){
                     [self.IFlyRecognizer setParameter:@"0" forKey:@"ptt"]; // no punctuation
                     [self.IFlyRecognizer setParameter:@"0" forKey:@"nonum"]; // use character for digits
+                    [self.IFlyRecognizer setParameter:@"5" forKey:@"asr_wbest"]; // multiple results
                     [self engineInitCallback: 3]; // 3 : iFlytek asr for iOS
                 }
                 else {
                     [self sendErrorWithMessage:@"IFlyTek init error" andCode:9];
                     return;
                 }
+            }
+            else { // already inited 
+                [self engineInitCallback: 3]; // 3 : iFlytek asr for iOS
             }
         }
         else {           
