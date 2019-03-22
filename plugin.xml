@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin
-    xmlns="http://www.phonegap.com/ns/plugins/1.0" id="speech-recognition" version="0.4.0">
+    xmlns="http://www.phonegap.com/ns/plugins/1.0" id="asr-ios" version="0.1.0">
     <name>SpeechRecognition</name>
     <description>Cordova Speech Recognition Plugin</description>
     <license>MIT</license>
