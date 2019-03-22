@@ -96,9 +96,9 @@
                 NSDictionary *wDic = [cwArray objectAtIndex:j];
                 NSString *str = [wDic objectForKey:@"w"];
                 [tempStr appendString: str];
-                [tempStr appendString: "/"];
+                [tempStr appendString: @"/"];
             }
-            [tempStr appendString: "|"];
+            [tempStr appendString: @"|"];
         }
     }
     return tempStr;
