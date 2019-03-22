@@ -96,9 +96,13 @@
                 NSDictionary *wDic = [cwArray objectAtIndex:j];
                 NSString *str = [wDic objectForKey:@"w"];
                 [tempStr appendString: str];
-                [tempStr appendString: @"/"];
+                if (j < [cwArray count] - 1) {
+                    [tempStr appendString: @"/"];
+                }
             }
-            [tempStr appendString: @"|"];
+            if (i < [wordArray count] - 1){
+                [tempStr appendString: @"|"];
+            }
         }
     }
     return tempStr;
